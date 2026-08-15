@@ -1,0 +1,100 @@
+/* ==========================================================================
+   DESIGN TOKENS
+   Single source of truth for color, glass, depth, spacing and type scale.
+   Every other stylesheet reads from these custom properties only —
+   never hard-code a color or a blur value outside this file.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand palette (unchanged from original identity) ---- */
+  --bg: #080a0f;
+  --surface: #0d1017;
+  --panel: #111520;
+  --border: #1e2535;
+  --accent: #c8a96e;
+  --accent-rgb: 200, 169, 110;
+  --accent2: #4a9eff;
+  --accent2-rgb: 74, 158, 255;
+  --text: #ffffff;
+  --text-body: #e2e8f0;
+  --muted: #94a3b8;
+  --subtle: #64748b;
+
+  /* ---- Glass surfaces (dark mode) ----
+     Each level = its own opacity / blur / border / shadow.
+     L0 ambient -> L1 section -> L2 card -> L3 floating UI. */
+  --glass-tint-rgb: 17, 21, 32;           /* base tint for glass fills, ~ --panel */
+  --glass-l1-bg: rgba(17, 21, 32, 0.46);
+  --glass-l1-blur: 12px;
+  --glass-l1-border: rgba(255, 255, 255, 0.06);
+  --glass-l1-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+
+  --glass-l2-bg: rgba(20, 25, 38, 0.52);
+  --glass-l2-blur: 20px;
+  --glass-l2-border: rgba(255, 255, 255, 0.09);
+  --glass-l2-shadow: 0 16px 48px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255,255,255,0.02) inset;
+
+  --glass-l3-bg: rgba(22, 27, 42, 0.62);
+  --glass-l3-blur: 32px;
+  --glass-l3-border: rgba(255, 255, 255, 0.12);
+  --glass-l3-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.04) inset;
+
+  --glass-highlight: rgba(255, 255, 255, 0.5);   /* top-edge sheen on L1-L3 */
+  --glass-highlight-soft: rgba(255, 255, 255, 0.14);
+
+  /* ---- Typography ---- */
+  --font-display: 'Cormorant Garamond', 'Noto Serif JP', 'Noto Serif Devanagari', serif;
+  --font-mono-display: 'Bebas Neue', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Inter', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
+
+  /* ---- Elevation z-index scale ---- */
+  --z-base: 1;
+  --z-section: 2;
+  --z-l1: 10;
+  --z-l2: 20;
+  --z-dock: 500;
+  --z-palette: 900;
+  --z-cursor: 9998;
+  --z-transition: 10000;
+
+  /* ---- Motion ---- */
+  --ease-glass: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 0.2s;
+  --dur-med: 0.45s;
+  --dur-slow: 0.8s;
+}
+
+/* ==========================================================================
+   LIGHT MODE — overrides only what needs to change
+   ========================================================================== */
+body.light-mode {
+  --bg: #f5f3ef;
+  --surface: #ece9e3;
+  --panel: #e4e0d8;
+  --border: #c8c2b4;
+  --accent: #a07840;
+  --accent-rgb: 160, 120, 64;
+  --accent2: #2070cc;
+  --accent2-rgb: 32, 112, 204;
+  --text: #0b1220;
+  --text-body: #26324a;
+  --muted: #3f4b63;
+  --subtle: #56617a;
+
+  --glass-tint-rgb: 255, 255, 255;
+  --glass-l1-bg: rgba(255, 255, 255, 0.42);
+  --glass-l1-border: rgba(15, 23, 42, 0.07);
+  --glass-l1-shadow: 0 8px 32px rgba(80, 65, 40, 0.10);
+
+  --glass-l2-bg: rgba(255, 255, 255, 0.52);
+  --glass-l2-border: rgba(15, 23, 42, 0.09);
+  --glass-l2-shadow: 0 16px 48px rgba(80, 65, 40, 0.14), 0 0 0 1px rgba(255,255,255,0.5) inset;
+
+  --glass-l3-bg: rgba(255, 255, 255, 0.66);
+  --glass-l3-border: rgba(15, 23, 42, 0.10);
+  --glass-l3-shadow: 0 24px 64px rgba(80, 65, 40, 0.18), 0 0 0 1px rgba(255,255,255,0.6) inset;
+
+  --glass-highlight: rgba(255, 255, 255, 0.9);
+  --glass-highlight-soft: rgba(255, 255, 255, 0.5);
+}

@@ -1,0 +1,111 @@
+/* ==========================================================================
+   CARDS — L2 glass surfaces. Project & certification cards get the
+   full redesign; experience/education/skill cards share the same
+   glass base for consistency.
+   ========================================================================== */
+
+.exp-card, .edu-card, .skill-card, .achievement-item {
+  padding: 34px 32px;
+  transition: transform 0.5s var(--ease-spring), box-shadow 0.4s var(--ease-glass), border-color 0.35s var(--ease-glass);
+}
+.exp-card:hover, .edu-card:hover, .skill-card:hover, .achievement-item:hover {
+  border-color: rgba(var(--accent-rgb), 0.3);
+  transform: translateY(-5px);
+  box-shadow: var(--glass-l2-shadow);
+}
+/* iOS-style press: a real material responds to touch/click with an immediate,
+   slightly-overdamped compress, then springs back on release — no glow, just weight. */
+.exp-card:active, .edu-card:active, .skill-card:active, .achievement-item:active {
+  transform: translateY(-2px) scale(0.985);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.exp-type, .edu-badge {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2);
+  margin-bottom: 12px; display: inline-block; padding: 4px 11px; border-radius: 999px;
+  border: 1px solid rgba(var(--accent2-rgb), 0.25); background: rgba(var(--accent2-rgb), 0.08);
+}
+.exp-date, .edu-year { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.exp-title, .edu-degree { font-family: var(--font-display); font-size: 21px; font-weight: 400; color: var(--text); margin-bottom: 4px; line-height: 1.25; }
+.exp-org, .edu-school { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.exp-desc, .edu-detail { color: var(--muted); font-size: 13px; line-height: 1.85; margin-bottom: 16px; }
+.edu-score { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 7px 15px; border-radius: 10px; font-size: 11px; color: var(--accent); border: 1px solid var(--glass-l2-border); }
+.edu-score span { color: var(--muted); font-size: 10px; }
+
+.skill-icon { width: 40px; height: 40px; margin-bottom: 18px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: rgba(var(--accent-rgb),0.1); transition: transform 0.5s var(--ease-spring); }
+.skill-card:hover .skill-icon { transform: scale(1.08) rotate(-4deg); }
+.skill-icon svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.7; }
+.skill-cat { font-family: var(--font-display); font-size: 19px; color: var(--text); margin-bottom: 12px; }
+.skill-items { color: var(--muted); font-size: 13px; line-height: 2; }
+
+/* ==========================================================================
+   PROJECT CARDS — redesigned
+   ========================================================================== */
+.project-card {
+  padding: 32px 30px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.5s var(--ease-spring), box-shadow 0.4s var(--ease-glass), border-color 0.35s var(--ease-glass);
+  transform-style: preserve-3d;
+}
+.project-card:hover {
+  border-color: rgba(var(--accent-rgb), 0.32);
+  box-shadow: var(--glass-l3-shadow);
+}
+.project-card:active {
+  transform: scale(0.985);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.6, 1);
+}
+.project-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.project-num { font-family: var(--font-mono-display); font-size: 12px; letter-spacing: 3px; color: var(--muted); opacity: 0.6; }
+.project-title { font-family: var(--font-display); font-size: 23px; font-weight: 400; color: var(--text); line-height: 1.2; }
+.project-subtitle { font-family: var(--font-ui); font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.project-desc { font-size: 14.5px; line-height: 1.75; color: var(--muted); flex-grow: 1; }
+.project-note { font-size: 12.5px; line-height: 1.6; color: var(--subtle); font-style: italic; padding: 10px 14px; border-left: 2px solid rgba(var(--accent-rgb),0.4); background: rgba(var(--accent-rgb),0.04); border-radius: 0 8px 8px 0; }
+.project-tech { margin-top: 4px; }
+.project-links { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+.project-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-ui); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-body); text-decoration: none; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--glass-l2-border); background: var(--glass-l1-bg);
+  transition: all 0.25s var(--ease-glass);
+}
+.project-link:hover { color: var(--bg); background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+.project-link svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.project-link.disabled { opacity: 0.4; pointer-events: none; }
+
+/* ==========================================================================
+   CERTIFICATION CARDS — credential-wall tiles
+   ========================================================================== */
+.cert-card {
+  padding: 26px 24px;
+  cursor: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.5s var(--ease-spring), box-shadow 0.4s var(--ease-glass), border-color 0.3s;
+}
+.cert-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--glass-l3-shadow);
+  border-color: rgba(var(--accent-rgb), 0.3);
+}
+.cert-card:active {
+  transform: translateY(-3px) scale(0.98);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.6, 1);
+}
+.cert-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cert-mark { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, rgba(var(--accent-rgb),0.22), rgba(var(--accent2-rgb),0.14)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.5s var(--ease-spring); }
+.cert-card:hover .cert-mark { transform: scale(1.08) rotate(-4deg); }
+.cert-mark svg { width: 19px; height: 19px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+.cert-verified { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: #34d399; display: flex; align-items: center; gap: 4px; }
+.cert-verified svg { width: 11px; height: 11px; stroke: #34d399; fill: none; stroke-width: 2.5; }
+.cert-issuer { font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); }
+.cert-title { font-family: var(--font-display); font-size: 19px; color: var(--text); line-height: 1.25; }
+.cert-desc { font-size: 13.5px; line-height: 1.65; color: var(--muted); }
+.cert-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px solid var(--glass-l1-border); }
+.cert-date { font-size: 10.5px; color: var(--muted); letter-spacing: 0.3px; }
+.cert-id { font-size: 10px; color: var(--subtle); font-family: var(--font-ui); }
+.cert-view-btn { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); background: none; border: none; cursor: none; padding: 0; }

@@ -1,0 +1,59 @@
+/* ==========================================================================
+   CURSOR — adaptive ring + context labels
+   Replaces the old flat dot + mix-blend-mode ring.
+   ========================================================================== */
+.cursor {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: var(--z-cursor);
+  will-change: transform;
+}
+
+.cursor-ring {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9997;
+  border: 1.4px solid rgba(var(--accent-rgb), 0.55);
+  background: rgba(var(--glass-tint-rgb), 0.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  will-change: transform;
+  transition: width 0.35s var(--ease-spring), height 0.35s var(--ease-spring),
+              border-color 0.3s ease, background 0.3s ease, opacity 0.25s ease;
+}
+
+.cursor-ring.ring-hover {
+  width: 46px; height: 46px;
+  border-color: rgba(var(--accent-rgb), 0.8);
+  background: rgba(var(--glass-tint-rgb), 0.18);
+}
+
+.cursor-ring.ring-label {
+  width: auto; height: 40px;
+  min-width: 74px;
+  border-radius: 999px;
+  padding: 0 18px;
+  border-color: rgba(var(--accent-rgb), 0.85);
+  background: rgba(var(--glass-tint-rgb), 0.72);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.cursor-ring.ring-press { border-color: var(--accent); }
+
+.cursor-label {
+  font-family: var(--font-ui);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--text);
+  opacity: 0; transform: scale(0.85);
+  transition: opacity 0.2s ease, transform 0.25s var(--ease-spring);
+  white-space: nowrap;
+}
+.cursor-ring.ring-label .cursor-label { opacity: 1; transform: scale(1); }
+
+/* When the ring becomes a label pill, hide the small precision dot — the pill is the whole affordance now */
+.cursor-ring.ring-label ~ .cursor,
+body:has(.cursor-ring.ring-label) .cursor { opacity: 0; }

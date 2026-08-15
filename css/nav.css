@@ -1,0 +1,133 @@
+/* ==========================================================================
+   FLOATING GLASS DOCK NAVIGATION
+   ========================================================================== */
+.dock-wrap {
+  position: fixed;
+  top: 18px; left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-dock);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  transition: padding 0.4s var(--ease-glass), top 0.4s var(--ease-glass), gap 0.4s var(--ease-glass);
+}
+.dock-wrap.glass-l3 { box-shadow: var(--glass-l3-shadow); }
+
+.dock-brand {
+  font-family: var(--font-mono-display);
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  padding: 0 14px 0 10px;
+  white-space: nowrap;
+  border-right: 1px solid var(--glass-l3-border);
+  margin-right: 4px;
+}
+
+.dock-links { display: flex; align-items: center; gap: 2px; list-style: none; position: relative; }
+.dock-links li { position: relative; }
+.dock-links a {
+  position: relative;
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.3s var(--ease-glass), transform 0.25s var(--ease-spring), padding 0.4s var(--ease-glass);
+  z-index: 2;
+}
+.dock-link-label {
+  display: inline-block;
+  max-width: 140px;
+  overflow: hidden;
+  transition: max-width 0.4s var(--ease-glass), opacity 0.3s var(--ease-glass), margin 0.4s var(--ease-glass);
+  opacity: 1;
+}
+.dock-links a:hover { color: var(--text); transform: translateY(-2px); }
+.dock-links a.active { color: var(--bg); }
+body.light-mode .dock-links a.active { color: var(--bg); }
+
+/* Sliding active-pill indicator, positioned via JS with --pill-x/--pill-w */
+.dock-indicator {
+  position: absolute; top: 4px; left: 0; height: calc(100% - 8px);
+  width: var(--pill-w, 0px);
+  transform: translateX(var(--pill-x, 0px));
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 999px;
+  transition: transform 0.45s var(--ease-spring), width 0.45s var(--ease-spring), opacity 0.3s;
+  opacity: 0;
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.35);
+}
+.dock-indicator.visible { opacity: 1; }
+
+.dock-actions { display: flex; align-items: center; gap: 6px; padding-left: 6px; margin-left: 4px; border-left: 1px solid var(--glass-l3-border); }
+
+.dock-btn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  cursor: none;
+  font-size: 13px;
+  transition: all 0.3s var(--ease-glass);
+  flex-shrink: 0;
+}
+.dock-btn:hover { color: var(--accent); background: rgba(var(--accent-rgb), 0.1); transform: translateY(-2px) scale(1.08); border-color: rgba(var(--accent-rgb), 0.25); }
+.dock-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+/* Language switcher */
+.lang-switch { position: relative; }
+.lang-switch-btn { font-family: var(--font-ui); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
+.lang-menu {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  min-width: 148px;
+  padding: 6px;
+  border-radius: 16px;
+  display: flex; flex-direction: column; gap: 2px;
+  opacity: 0; visibility: hidden; transform: translateY(-6px) scale(0.96);
+  transition: all 0.25s var(--ease-glass);
+  z-index: var(--z-palette);
+}
+.lang-menu.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+.lang-menu button {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 9px 12px; border-radius: 10px;
+  background: none; border: none; color: var(--text-body);
+  font-family: var(--font-ui); font-size: 12.5px; text-align: left;
+  cursor: none; transition: background 0.2s, color 0.2s;
+}
+.lang-menu button:hover { background: rgba(var(--accent-rgb), 0.1); color: var(--accent); }
+.lang-menu button.active { color: var(--accent); font-weight: 600; }
+.lang-menu button small { color: var(--muted); font-size: 10px; }
+
+/* Condensed state on scroll-down — animated collapse instead of an abrupt
+   display:none jump-cut, so the dock's width (and its translateX(-50%)
+   centering) shrinks smoothly rather than snapping sideways. */
+.dock-brand {
+  max-width: 200px; overflow: hidden;
+  transition: max-width 0.4s var(--ease-glass), opacity 0.3s var(--ease-glass), padding 0.4s var(--ease-glass), margin 0.4s var(--ease-glass);
+}
+.dock-wrap.condensed .dock-brand { max-width: 0; opacity: 0; padding: 0; margin: 0; border-right-width: 0; }
+.dock-wrap.condensed .dock-link-label { max-width: 0; opacity: 0; margin: 0; }
+.dock-wrap.condensed .dock-links a { padding: 9px 12px; }
+.dock-wrap.condensed { top: 12px; }
+.dock-wrap { transition: top 0.4s var(--ease-glass); }
+
+/* Mobile: collapse to essential icons, hide long labels */
+@media (max-width: 860px) {
+  .dock-brand { display: none; }
+  .dock-links a { padding: 9px 11px; }
+  .dock-link-label { display: none; }
+  .dock-wrap { max-width: calc(100vw - 24px); overflow-x: auto; scrollbar-width: none; }
+  .dock-wrap::-webkit-scrollbar { display: none; }
+}

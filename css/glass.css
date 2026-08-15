@@ -1,0 +1,124 @@
+/* ==========================================================================
+   GLASS SYSTEM — strict depth hierarchy
+   .glass-l1  section-level translucent panels   (blur 12px)
+   .glass-l2  card-level surfaces                (blur 20px)
+   .glass-l3  floating UI: dock, palette, modals (blur 32px)
+   Every glass surface gets: fill, blur, 1px border, elevation shadow,
+   and a top-edge highlight that sells "this is a pane of glass".
+   ========================================================================== */
+
+.glass-l1, .glass-l2, .glass-l3 {
+  position: relative;
+  backdrop-filter: blur(var(--glass-l1-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-l1-blur)) saturate(140%);
+  border: 1px solid var(--glass-l1-border);
+  isolation: isolate;
+}
+
+.glass-l1 {
+  background: var(--glass-l1-bg);
+  border-radius: 24px;
+  box-shadow: var(--glass-l1-shadow);
+  z-index: var(--z-l1);
+}
+
+.glass-l2 {
+  background: var(--glass-l2-bg);
+  backdrop-filter: blur(var(--glass-l2-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-l2-blur)) saturate(150%);
+  border-color: var(--glass-l2-border);
+  border-radius: 20px;
+  box-shadow: var(--glass-l2-shadow);
+  z-index: var(--z-l2);
+}
+
+.glass-l3 {
+  background: var(--glass-l3-bg);
+  backdrop-filter: blur(var(--glass-l3-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-l3-blur)) saturate(160%);
+  border-color: var(--glass-l3-border);
+  border-radius: 20px;
+  box-shadow: var(--glass-l3-shadow);
+}
+
+/* Top-edge sheen — the detail that reads as "glass" instead of "blur" */
+.glass-l1::before, .glass-l2::before, .glass-l3::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(150deg, var(--glass-highlight) 0%, transparent 30%, transparent 70%, var(--glass-highlight-soft) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle inner reflection band near the top of every glass surface */
+.glass-l1::after, .glass-l2::after, .glass-l3::after {
+  content: '';
+  position: absolute; top: 0; left: 8%; right: 8%; height: 40%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* Light mode: a faint text-shadow "backplate" behind copy sitting on
+   blurred glass — imperceptible as a shadow, but it nudges effective
+   contrast up a notch on bright, busy backgrounds. */
+body.light-mode .glass-l1 p,
+body.light-mode .glass-l2 p,
+body.light-mode .glass-l1 .info-val,
+body.light-mode .glass-l2 div:not([class]) {
+  text-shadow: 0 1px 12px rgba(255,255,255,0.6);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-l1 { background: color-mix(in srgb, var(--panel) 88%, transparent); }
+  .glass-l2 { background: color-mix(in srgb, var(--panel) 92%, transparent); }
+  .glass-l3 { background: color-mix(in srgb, var(--panel) 95%, transparent); }
+}
+
+/* ==========================================================================
+   GLASS BLOBS — irregular liquid-glass shapes (replace flat blurred orbs)
+   Rendered as SVG with feTurbulence displacement, morphing slowly via <animate>.
+   ========================================================================== */
+.glass-blob-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.glass-blob {
+  position: absolute;
+  filter: blur(0.5px);
+  opacity: 0.55;
+  will-change: transform;
+  transition: opacity 0.6s ease;
+}
+body.light-mode .glass-blob { opacity: 0.4; }
+
+.glass-blob svg { width: 100%; height: 100%; display: block; }
+
+/* ==========================================================================
+   DEPTH-BASED SECTION SCAFFOLDING
+   Sections sit on L0 (page bg). Panels within sit on L1. Cards on L2.
+   ========================================================================== */
+.section-panel {
+  padding: 56px;
+  border-radius: 28px;
+}
+@media (max-width: 900px) { .section-panel { padding: 32px 22px; } }
+
+/* Scroll-glass: cards gain extra blur as they cross the viewport edge, JS-driven via --scroll-blur */
+.scroll-glass {
+  --scroll-blur: 0px;
+  backdrop-filter: blur(calc(var(--glass-l2-blur) + var(--scroll-blur))) saturate(150%);
+  -webkit-backdrop-filter: blur(calc(var(--glass-l2-blur) + var(--scroll-blur))) saturate(150%);
+}
