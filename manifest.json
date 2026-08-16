@@ -1,0 +1,13 @@
+{
+  "name": "Rahul Sahu — Electrical & Electronics Engineer",
+  "short_name": "Rahul Sahu",
+  "description": "Portfolio of Rahul Sahu, final-year B.Tech EEE student targeting Japanese engineering placements.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080a0f",
+  "theme_color": "#080a0f",
+  "icons": [
+    { "src": "assets/images/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/images/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

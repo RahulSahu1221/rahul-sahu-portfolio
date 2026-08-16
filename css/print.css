@@ -1,0 +1,33 @@
+/* ==========================================================================
+   PRINT — a recruiter who prints this gets a clean, readable document,
+   not a broken glass-blur page. Strips all decoration, forces plain
+   black-on-white, keeps the content structure.
+   ========================================================================== */
+@media print {
+  #ambient-canvas, #star-canvas, .glass-blob-layer, #bg-depth-grid,
+  #energy-flow-line, #scroll-progress, #theme-transition-veil,
+  .cursor, .cursor-ring, .dock-wrap,
+  .cmdk-backdrop, #certModal, .contact-watermark, #metaball-canvas,
+  .marquee-wrap, .scroll-indicator, .japan-badge, .deco-lines {
+    display: none !important;
+  }
+
+  * {
+    background: #fff !important;
+    color: #111 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    text-shadow: none !important;
+  }
+
+  body { font-family: Georgia, 'Times New Roman', serif; }
+  section { padding: 18px 0; page-break-inside: avoid; }
+  .glass-l1, .glass-l2, .glass-l3 { border: 1px solid #ccc !important; }
+  .section-title em, .info-val.accent, .exp-org, .edu-school { color: #333 !important; }
+  a { text-decoration: underline; color: #111 !important; }
+  .project-tabs, .cert-view-btn, .copy-btn { display: none !important; }
+  .project-panel { display: block !important; }
+  .experience-grid, .projects-grid, .edu-grid, .skills-grid, .cert-grid { display: block !important; }
+  .exp-card, .edu-card, .skill-card, .project-card, .cert-card, .achievement-item { margin-bottom: 14px; break-inside: avoid; }
+}
