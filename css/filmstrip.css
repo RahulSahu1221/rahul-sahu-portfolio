@@ -1,0 +1,96 @@
+/* ==========================================================================
+   CERTIFICATIONS FILMSTRIP — autonomous ping-pong marquee.
+   No scroll-jacking, no position:sticky, no extra section height. The
+   track auto-drifts right-to-left; the instant its trailing edge would
+   overshoot the viewport it reverses, drifts left-to-right back to the
+   start, reverses again, and repeats — driven by filmstrip.js on the
+   shared PortfolioPerf ticker. Section behaves like every other
+   .section-spatial section (normal height, normal padding).
+   Mobile/tablet (<=900px) and prefers-reduced-motion: autoplay is off and
+   the track becomes a plain native horizontal scroller with snap points —
+   swipe/drag controls it directly instead.
+   ========================================================================== */
+
+.filmstrip-viewport {
+  overflow: hidden;
+  position: relative;
+  margin-top: 8px;
+}
+
+.filmstrip-track {
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+  will-change: transform;
+}
+
+.filmstrip-card {
+  flex: 0 0 auto;
+  width: min(360px, 78vw);
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  cursor: none;
+}
+
+.filmstrip-thumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--glass-l1-bg);
+  border: 1px solid var(--glass-l1-border);
+}
+.filmstrip-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--ease-glass); }
+.filmstrip-card:hover .filmstrip-thumb img { transform: scale(1.06); }
+
+/* Position scrubber — reflects where the autoplay currently sits between
+   the two reversal points, not "progress toward an end" (there isn't one). */
+.filmstrip-progress {
+  position: relative;
+  height: 3px;
+  margin-top: 28px;
+  border-radius: 3px;
+  background: rgba(var(--accent-rgb), 0.14);
+}
+.filmstrip-progress-fill {
+  position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.5);
+  transition: width 0.1s linear;
+}
+
+.filmstrip-hint {
+  margin-top: 14px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.filmstrip-hint svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+@media (max-width: 900px) {
+  .filmstrip-viewport {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .filmstrip-track { transform: none !important; }
+  .filmstrip-card { scroll-snap-align: start; width: min(300px, 82vw); }
+  .filmstrip-progress { display: none; }
+  .filmstrip-hint-mobile { display: flex; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filmstrip-viewport { overflow-x: auto; scroll-snap-type: x proximity; }
+  .filmstrip-track { transform: none !important; }
+  .filmstrip-progress { display: none; }
+  .filmstrip-hint-mobile { display: flex; }
+}

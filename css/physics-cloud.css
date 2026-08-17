@@ -1,0 +1,126 @@
+/* ==========================================================================
+   SKILLS PHYSICS CLOUD
+   Your real skill categories/items stay in the DOM exactly as before
+   (.skills-data-source) purely so i18n.js and skills-chips.js keep
+   translating and chipping them normally — that block is just visually
+   hidden. physics-cloud.js reads the resulting .skill-chip text and
+   builds real, visible glass pills (.phys-chip) inside .skills-physics-wrap,
+   then drives their position with Matter.js. Static fallback (no physics)
+   applies on prefers-reduced-motion, low-tier devices, or if Matter.js
+   fails to load.
+   ========================================================================== */
+
+.skills-data-source {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skills-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-bottom: 22px;
+}
+.skills-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.skills-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.skills-legend-item.tint-a .skills-legend-dot { background: var(--accent); }
+.skills-legend-item.tint-b .skills-legend-dot { background: var(--accent2); }
+.skills-legend-item.tint-c .skills-legend-dot { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+
+.skills-physics-wrap {
+  position: relative;
+  width: 100%;
+  height: min(62vh, 620px);
+  min-height: 380px;
+  border-radius: 28px;
+  overflow: hidden;
+  touch-action: none;
+}
+.skills-physics-hint {
+  position: absolute;
+  bottom: 16px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.skills-physics-hint svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+/* ---------- Chips (physics mode) ---------- */
+.phys-chip {
+  position: absolute;
+  top: 0; left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-body);
+  border: 1px solid var(--glass-l2-border);
+  background: var(--glass-l2-bg);
+  backdrop-filter: blur(var(--glass-l2-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-l2-blur)) saturate(150%);
+  box-shadow: var(--glass-l1-shadow);
+  white-space: nowrap;
+  cursor: grab;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+  opacity: 0;
+  transition: opacity 0.5s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.phys-chip.settled { opacity: 1; }
+.phys-chip:active { cursor: grabbing; box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.5), var(--glass-l2-shadow); }
+.phys-chip.tint-a { border-color: rgba(var(--accent-rgb), 0.35); background: linear-gradient(135deg, rgba(var(--accent-rgb),0.14), var(--glass-l2-bg)); }
+.phys-chip.tint-b { border-color: rgba(var(--accent2-rgb), 0.35); background: linear-gradient(135deg, rgba(var(--accent2-rgb),0.14), var(--glass-l2-bg)); }
+.phys-chip.tint-c { border-color: rgba(var(--accent-rgb), 0.3); background: linear-gradient(135deg, rgba(var(--accent-rgb),0.1), rgba(var(--accent2-rgb),0.1)); }
+
+/* Invisible measuring clone — same class, positioned off-screen, used once
+   per chip to read its real rendered width/height before the physics body
+   is created, so the collision shape matches the visible pill exactly. */
+.phys-chip-measure { position: fixed; top: -9999px; left: -9999px; opacity: 0; pointer-events: none; }
+
+/* ---------- Static fallback (reduced motion / low tier / no Matter) ---------- */
+.skills-physics-wrap.static-fallback {
+  height: auto;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 10px;
+  padding: 28px;
+}
+.skills-physics-wrap.static-fallback .phys-chip {
+  position: relative;
+  opacity: 1;
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .skills-physics-wrap { height: min(70vh, 520px); min-height: 320px; border-radius: 22px; }
+  .phys-chip { padding: 8px 14px; font-size: 12px; }
+}
